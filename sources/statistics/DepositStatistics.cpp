@@ -881,7 +881,7 @@ namespace
             collectSamples(deposit, result, Scope::Useful, &block);
 
         out << "============================================================\n";
-        out << "БЛОК " << block.getName() << "\n";
+        out << "БЛОК " << BlockDesignation::format(block.getName()) << "\n";
         out << "============================================================\n\n";
         out << "Скважин в блоке: " << block.getBoreholeNumbers().size() << "\n";
         out << "Всего образцов: " << all.size() << "\n";
