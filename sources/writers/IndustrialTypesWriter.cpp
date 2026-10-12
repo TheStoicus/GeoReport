@@ -1,4 +1,5 @@
 #include "../../headers/writers/IndustrialTypesWriter.h"
+#include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 
@@ -271,7 +272,7 @@ void IndustrialTypesWriter::write(
         const CriterionResult type2Boreholes =
             calculateBoreholes(block, deposit, analysisResult, false);
 
-        ExcelWriteUtils::writeString(sheet, 2, column, block.getName());
+        ExcelWriteUtils::writeString(sheet, 2, column, BlockDesignation::format(block.getName()));
         ExcelWriteUtils::writeString(
             sheet, 3, column,
             std::to_string(type1Samples.total) + " / " +
