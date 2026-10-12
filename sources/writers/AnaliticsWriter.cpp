@@ -2,7 +2,6 @@
 #include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/normative/NormativeAnalysis.h"
-#include "../../headers/writers/BlockDesignation.h"
 
 #include <OpenXLSX.hpp>
 
