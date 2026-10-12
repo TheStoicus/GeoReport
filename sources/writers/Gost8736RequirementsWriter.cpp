@@ -1,4 +1,5 @@
 #include "../../headers/writers/Gost8736RequirementsWriter.h"
+#include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/domain/Borehole.h"
@@ -86,7 +87,7 @@ void Gost8736RequirementsWriter::write(
 
         ExcelWriteUtils::writeString(
             sheet, row, 1,
-            block.getName() + " (" + std::to_string(total) + ")");
+            BlockDesignation::format(block.getName()) + " (" + std::to_string(total) + ")");
         ExcelWriteUtils::writeString(sheet, row, 2, value(residue063, total));
         ExcelWriteUtils::writeString(sheet, row, 3, value(less016, total));
         ExcelWriteUtils::writeString(sheet, row, 4, value(clayey, total));
