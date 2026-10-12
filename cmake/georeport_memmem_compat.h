@@ -2,15 +2,18 @@
 #define GEOREPORT_MEMMEM_COMPAT_H
 
 /*
- * Совместимость с macOS: GNU-функция memmem() отсутствует в стандартной
- * библиотеке macOS. Заголовок подключается CMake только при сборке LibreDWG
- * на Apple-платформах.
+ * Старые SDK macOS могут не объявлять GNU/BSD-функцию memmem().
+ * Для них перенаправляем вызовы LibreDWG на локальную реализацию.
+ * На современных SDK используем системную реализацию, чтобы избежать
+ * конфликта с объявлением memmem из string.h.
  */
+#include <Availability.h>
 #include <stddef.h>
 #include <string.h>
 
-#ifndef memmem
-static inline void* memmem(
+#if defined(__APPLE__) && defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && \
+    (__MAC_OS_X_VERSION_MAX_ALLOWED < 130000)
+static inline void* georeport_memmem(
     const void* haystack,
     size_t haystackLength,
     const void* needle,
@@ -34,6 +37,7 @@ static inline void* memmem(
 
     return NULL;
 }
+#define memmem georeport_memmem
 #endif
 
 #endif
