@@ -4,6 +4,7 @@
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 #include "../../headers/calculations/MineralCalculationPart.h"
 #include "../../headers/normative/NormativeAnalysis.h"
+#include "../../headers/writers/BlockDesignation.h"
 
 #include <OpenXLSX.hpp>
 
@@ -190,7 +191,7 @@ void BlockResultWriter::write(
             geologyResults,
             calculator,
             MineralCalculationPart::TotalUsefulMineral,
-            "Блок " + block.getName());
+            "Блок " + BlockDesignation::format(block.getName()));
 
         /*
          * Затем, если в блоке присутствуют обе части ПИ,
@@ -230,7 +231,7 @@ void BlockResultWriter::write(
                 geologyResults,
                 calculator,
                 MineralCalculationPart::DryUsefulMineral,
-                "Подблок " + block.getName() + " — сухое ПИ");
+                "Подблок " + BlockDesignation::format(block.getName()) + " — сухое ПИ");
 
             row = writeBlockResult(
                 sheet,
@@ -242,7 +243,7 @@ void BlockResultWriter::write(
                 geologyResults,
                 calculator,
                 MineralCalculationPart::WaterBearingUsefulMineral,
-                "Подблок " + block.getName() + " — обводнённое ПИ");
+                "Подблок " + BlockDesignation::format(block.getName()) + " — обводнённое ПИ");
         }
     }
 }
