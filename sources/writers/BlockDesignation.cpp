@@ -78,3 +78,11 @@ std::string BlockDesignation::subblock(
 
     return subblockName + designation.second;
 }
+
+std::string BlockDesignation::format(const std::string& name)
+{
+    const auto designation = parse(name);
+    if (designation.second.empty())
+        return designation.first;
+    return designation.first + " " + designation.second;
+}
