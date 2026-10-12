@@ -1009,6 +1009,74 @@ void MainIndicatorsResultWriter::write(
         writeAverageRow(sheet,row,year2026,year2026Prs);
         ++row;
         writeTotalsRow(sheet,row,year2026,year2026Prs);
+
         ExcelWriteUtils::writeString(sheet,row,1,"СУММА");
+    }
+
+    // Отдельные итоги по группам запасов. Скважина входит в группу,
+    // если она включена хотя бы в один блок с соответствующей категорией.
+    struct ReserveGroup
+    {
+        std::string title;
+        std::vector<std::string> categories;
+    };
+
+    const ReserveGroup reserveGroups[] =
+    {
+        {"СВОДКА ПРОМЫШЛЕННЫХ ЗАПАСОВ (A + B + C1)", {"A", "B", "C1"}},
+        {"СВОДКА ЗАБАЛАНСОВЫХ ЗАПАСОВ (C2)", {"C2"}},
+        {"СВОДКА ПРОГНОЗНЫХ РЕСУРСОВ (P1 + P2)", {"P1", "P2"}}
+    };
+
+    for (const ReserveGroup& group : reserveGroups)
+    {
+        std::set<std::string> groupBoreholes;
+        for (const Block& block : deposit.getBlocks())
+        {
+            const auto designation = BlockDesignation::parse(block.getName());
+            if (std::find(group.categories.begin(), group.categories.end(),
+                          designation.second) == group.categories.end())
+                continue;
+
+            groupBoreholes.insert(
+                block.getBoreholeNumbers().begin(),
+                block.getBoreholeNumbers().end());
+        }
+
+        std::vector<MainIndicators> groupIndicators;
+        std::vector<double> groupPrs;
+        for (const MainIndicators& indicator : indicators)
+        {
+            if (!groupBoreholes.contains(indicator.getBoreholeNumber()))
+                continue;
+
+            const Borehole* borehole =
+                deposit.findBorehole(indicator.getBoreholeNumber());
+            if (borehole == nullptr)
+                continue;
+
+            groupIndicators.push_back(indicator);
+            groupPrs.push_back(calculatePRSThickness(*borehole));
+        }
+
+        ++row;
+        ExcelWriteUtils::writeString(sheet, row, 1, group.title);
+        ++row;
+
+        if (groupIndicators.empty())
+        {
+            ExcelWriteUtils::writeString(
+                sheet, row, 1, "Нет скважин в этой группе категорий");
+            continue;
+        }
+
+        writeMinMaxRow(sheet, row, groupIndicators, groupPrs, false);
+        ++row;
+        writeMinMaxRow(sheet, row, groupIndicators, groupPrs, true);
+        ++row;
+        writeAverageRow(sheet, row, groupIndicators, groupPrs);
+        ++row;
+        writeTotalsRow(sheet, row, groupIndicators, groupPrs);
+        ExcelWriteUtils::writeString(sheet, row, 1, "СУММА");
     }
 }
