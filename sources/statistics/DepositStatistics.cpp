@@ -22,6 +22,7 @@
 #include <map>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -541,6 +542,38 @@ namespace
         }
     }
 
+
+    void writeRockTypeCounts(
+        std::ostream& out,
+        const std::vector<SampleRef>& allSamples,
+        const std::vector<SampleRef>& usefulSamples)
+    {
+        std::map<std::string, std::pair<std::size_t, std::size_t>> counts;
+
+        for (const SampleRef& ref : allSamples)
+        {
+            std::string type = ref.sample->getRockType();
+            if (type.empty()) type = "Не указан";
+            ++counts[type].first;
+        }
+
+        for (const SampleRef& ref : usefulSamples)
+        {
+            std::string type = ref.sample->getRockType();
+            if (type.empty()) type = "Не указан";
+            ++counts[type].second;
+        }
+
+        out << "Количество образцов по типам пород\n";
+        out << "  Тип породы | все образцы | образцы ПИ\n";
+        for (const auto& [type, values] : counts)
+            out << "  " << type << " | " << values.first
+                << " | " << values.second << "\n";
+        if (counts.empty())
+            out << "  Нет данных по типам пород.\n";
+        out << "\n";
+    }
+
     double totalThickness(
         const std::vector<SampleRef>& samples)
     {
@@ -804,6 +837,11 @@ namespace
         out << "  Количество образцов: " << samples.size() << "\n";
         out << "  Суммарная мощность интервалов образцов: "
             << displayNumber(totalThickness(samples)) << " м\n\n";
+        writeRockTypeCounts(
+            out,
+            scope == Scope::All ? samples : collectSamples(deposit, result, Scope::All, block),
+            samples);
+
 
         writeDistribution(
             out,
@@ -848,6 +886,7 @@ namespace
         out << "Образцов ПИ с ГОСТ-классификацией: " << classifiedGostCount(useful) << "\n";
         out << "Образцов с классификацией СП: " << classifiedSpCount(all) << "\n";
         out << "Образцов ПИ с классификацией СП: " << classifiedSpCount(useful) << "\n\n";
+        writeRockTypeCounts(out, all, useful);
 
         out << "Полезное ископаемое:\n";
         out << thicknessSummary(
@@ -886,6 +925,7 @@ namespace
         out << "Скважин в блоке: " << block.getBoreholeNumbers().size() << "\n";
         out << "Всего образцов: " << all.size() << "\n";
         out << "Образцов, отнесённых к ПИ: " << useful.size() << "\n\n";
+        writeRockTypeCounts(out, all, useful);
 
         out << "ПОЛЕЗНОЕ ИСКОПАЕМОЕ\n";
         out << thicknessSummary(
