@@ -1,4 +1,5 @@
 #include "../../headers/writers/ReserveSummaryWriter.h"
+#include "../../headers/writers/BlockDesignation.h"
 
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
@@ -582,51 +583,7 @@ std::pair<std::string, std::string>
 ReserveSummaryWriter::parseBlockDesignation(
     const std::string& blockName)
 {
-    /*
-     * Формат обозначения блока в исходном журнале:
-     *
-     *   IIIB  -> III + B
-     *   IVC1  -> IV  + C1
-     *
-     * Важный нюанс: буква C одновременно является римской цифрой.
-     * Поэтому нельзя просто читать все I/V/X/L/C/D/M подряд.
-     * Для наших обозначений последняя часть имеет формат:
-     *   одна латинская буква + необязательный номер подкатегории.
-     */
-    if (blockName.size() < 2)
-        return {blockName, {}};
-
-    std::size_t categoryStart = blockName.size() - 1;
-
-    while (categoryStart > 0 &&
-           blockName[categoryStart - 1] >= '0' &&
-           blockName[categoryStart - 1] <= '9')
-    {
-        --categoryStart;
-    }
-
-    /* Перед цифрами должна находиться буква категории. */
-    if (categoryStart > 0)
-    {
-        const char categoryLetter = blockName[categoryStart - 1];
-
-        if ((categoryLetter >= 'A' && categoryLetter <= 'Z') ||
-            (categoryLetter >= 'a' && categoryLetter <= 'z'))
-        {
-            --categoryStart;
-        }
-    }
-
-    if (categoryStart == 0)
-        return {blockName, {}};
-
-    const std::string blockNumber =
-        blockName.substr(0, categoryStart);
-
-    const std::string category =
-        blockName.substr(categoryStart);
-
-    return {blockNumber, category};
+    return BlockDesignation::parse(blockName);
 }
 
 double ReserveSummaryWriter::roundToTwoDecimals(double value)
