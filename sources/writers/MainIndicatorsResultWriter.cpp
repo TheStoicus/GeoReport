@@ -1,6 +1,7 @@
 #include "../../headers/writers/MainIndicatorsResultWriter.h"
 
 #include "../../headers/excel/ExcelWriteUtils.h"
+#include "../../headers/writers/BlockDesignation.h"
 
 #include <OpenXLSX.hpp>
 
@@ -17,31 +18,15 @@ namespace
 {
     std::string formatBlockDesignation(const std::string& name)
     {
-        if (name.size() < 2)
-            return name;
+        const auto designation = BlockDesignation::parse(name);
 
-        std::size_t categoryStart = name.size() - 1;
-        while (categoryStart > 0 &&
-               name[categoryStart - 1] >= '0' &&
-               name[categoryStart - 1] <= '9')
-        {
-            --categoryStart;
-        }
+        if (designation.second.empty())
+            return designation.first;
 
-        if (categoryStart > 0)
-        {
-            const char c = name[categoryStart - 1];
-            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-                --categoryStart;
-        }
-
-        if (categoryStart == 0)
-            return name;
-
-        return name.substr(0, categoryStart) + " " +
-               name.substr(categoryStart);
+        return designation.first + " " + designation.second;
     }
 }
+
 const BoreholeSectionAnalysis*
 MainIndicatorsResultWriter::findAnalysis(
     const std::vector<BoreholeSectionAnalysis>& analyses,
