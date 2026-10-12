@@ -1,4 +1,5 @@
 #include "../../headers/writers/Gost23735Writer.h"
+#include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 #include "../../headers/normative/NormativeAnalysis.h"
@@ -86,7 +87,7 @@ void Gost23735Writer::write(
 
         ExcelWriteUtils::writeString(
             sheet, row, 1,
-            block.getName() + " (" + std::to_string(total) + ")");
+            BlockDesignation::format(block.getName()) + " (" + std::to_string(total) + ")");
         ExcelWriteUtils::writeString(sheet, row, 2, countText.str());
         ExcelWriteUtils::writeString(sheet, row, 3, numbers.str());
         ++row;
