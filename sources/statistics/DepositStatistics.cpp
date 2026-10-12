@@ -953,23 +953,23 @@ namespace
         const DevelopmentSettings& development,
         const ReserveSummarySettings& reserve)
     {
-        out << "============================================================\\n";
-        out << "НАСТРОЙКИ РАСЧЁТА, ИСПОЛЬЗОВАННЫЕ ПРИ ЗАПУСКЕ\\n";
-        out << "============================================================\\n\\n";
-        out << "Полезное ископаемое и исключаемые породы:\\n";
-        out << "  Типы пород, заданные как полезные: " << joinTypes(mineral.getUsefulRockTypes()) << "\\n";
-        out << "  Песок включать в ПИ: " << yesNo(mineral.isSandUseful()) << "\\n";
-        out << "  Супесь включать в ПИ: " << yesNo(mineral.isSupesUseful()) << "\\n";
-        out << "  Суглинок включать в ПИ: " << yesNo(mineral.isSuglinokUseful()) << "\\n";
-        out << "  Глину включать в ПИ: " << yesNo(mineral.isClayUseful()) << "\\n";
-        out << "  Типы пород внешней вскрыши: " << joinTypes(mineral.getOverburdenRockTypes()) << "\\n";
-        out << "  Типы пород подстилающего слоя: " << joinTypes(mineral.getUnderlyingRockTypes()) << "\\n";
-        out << "  Минимальная мощность внешней вскрыши: " << displayNumber(mineral.getMinimumOverburdenThickness()) << " м\\n";
+        out << "============================================================\n";
+        out << "НАСТРОЙКИ РАСЧЁТА, ИСПОЛЬЗОВАННЫЕ ПРИ ЗАПУСКЕ\n";
+        out << "============================================================\n\n";
+        out << "Полезное ископаемое и исключаемые породы:\n";
+        out << "  Типы пород, заданные как полезные: " << joinTypes(mineral.getUsefulRockTypes()) << "\n";
+        out << "  Песок включать в ПИ: " << yesNo(mineral.isSandUseful()) << "\n";
+        out << "  Супесь включать в ПИ: " << yesNo(mineral.isSupesUseful()) << "\n";
+        out << "  Суглинок включать в ПИ: " << yesNo(mineral.isSuglinokUseful()) << "\n";
+        out << "  Глину включать в ПИ: " << yesNo(mineral.isClayUseful()) << "\n";
+        out << "  Типы пород внешней вскрыши: " << joinTypes(mineral.getOverburdenRockTypes()) << "\n";
+        out << "  Типы пород подстилающего слоя: " << joinTypes(mineral.getUnderlyingRockTypes()) << "\n";
+        out << "  Минимальная мощность внешней вскрыши: " << displayNumber(mineral.getMinimumOverburdenThickness()) << " м\n";
         out << "  Режим вскрыши: " << (mineral.getOverburdenMode() == OverburdenMode::FixedThickness
-            ? "фиксированная мощность" : "по типу породы") << "\\n";
-        out << "  Фиксированная мощность вскрыши: " << displayNumber(mineral.getFixedOverburdenThickness()) << " м\\n";
+            ? "фиксированная мощность" : "по типу породы") << "\n";
+        out << "  Фиксированная мощность вскрыши: " << displayNumber(mineral.getFixedOverburdenThickness()) << " м\n";
         out << "  Источник классификации песка для ПИ: "
-            << classificationSourceName(mineral.getSandClassificationSource()) << "\\n";
+            << classificationSourceName(mineral.getSandClassificationSource()) << "\n";
 
         const GostSandClass gostClasses[] = {
             GostSandClass::VeryFine, GostSandClass::Fine, GostSandClass::VerySmall,
@@ -980,7 +980,7 @@ namespace
         for (GostSandClass value : gostClasses)
             if (mineral.isGostSandClassUseful(value))
                 includedGost.push_back(SandClassification::toString(value));
-        out << "  Классы песка ГОСТ, включённые в ПИ: " << joinTypes(includedGost) << "\\n";
+        out << "  Классы песка ГОСТ, включённые в ПИ: " << joinTypes(includedGost) << "\n";
 
         const TkpSandClass tkpClasses[] = {
             TkpSandClass::Dusty, TkpSandClass::Fine, TkpSandClass::Medium,
@@ -990,12 +990,12 @@ namespace
         for (TkpSandClass value : tkpClasses)
             if (mineral.isTkpSandClassUseful(value))
                 includedTkp.push_back(SandClassification::toString(value));
-        out << "  Классы СП / ТКП, включённые в ПИ: " << joinTypes(includedTkp) << "\\n";
+        out << "  Классы СП / ТКП, включённые в ПИ: " << joinTypes(includedTkp) << "\n";
 
-        out << "\\nУровень грунтовых вод и разработка:\\n";
+        out << "\nУровень грунтовых вод и разработка:\n";
         out << "  Учитывать только сухое ПИ: "
-            << yesNo(groundwater.getUsefulMineralWaterMode() == UsefulMineralWaterMode::DryOnly) << "\\n";
-        out << "  Сухой защитный слой над УГВ: " << displayNumber(groundwater.getDryLayerAboveGroundwater()) << " м\\n";
+            << yesNo(groundwater.getUsefulMineralWaterMode() == UsefulMineralWaterMode::DryOnly) << "\n";
+        out << "  Сухой защитный слой над УГВ: " << displayNumber(groundwater.getDryLayerAboveGroundwater()) << " м\n";
         out << "  Режим расчёта УГВ: ";
         switch (groundwaterCalculation.getMode())
         {
@@ -1003,8 +1003,8 @@ namespace
             case GroundwaterCalculationMode::MeanLevel: out << "средний уровень"; break;
             case GroundwaterCalculationMode::IndividualLevel: out << "индивидуальный уровень"; break;
         }
-        out << "\\n  Порог доли скважин со вскрытым УГВ: "
-            << displayNumber(groundwaterCalculation.getMajorityThreshold() * 100.0, 1) << " %\\n";
+        out << "\n  Порог доли скважин со вскрытым УГВ: "
+            << displayNumber(groundwaterCalculation.getMajorityThreshold() * 100.0, 1) << " %\n";
         out << "  Способ разработки: ";
         switch (development.getMethod())
         {
@@ -1012,20 +1012,20 @@ namespace
             case DevelopmentMethod::Excavator: out << "экскаваторный"; break;
             case DevelopmentMethod::Dredger: out << "земснаряд"; break;
         }
-        out << "\\n  Предельная мощность обводнённого ПИ: "
-            << displayNumber(development.getWaterBearingMiningThickness()) << " м\\n";
+        out << "\n  Предельная мощность обводнённого ПИ: "
+            << displayNumber(development.getWaterBearingMiningThickness()) << " м\n";
         out << "  Сухая защитная подушка при разработке: "
-            << displayNumber(development.getDryProtectiveLayerThickness()) << " м\\n";
+            << displayNumber(development.getDryProtectiveLayerThickness()) << " м\n";
         out << "  Метод определения площади блоков: "
             << (reserve.getAreaMode() == BlockAreaMode::ManualBoundary
-                ? "по заданной границе" : "автоматическая выпуклая оболочка") << "\\n";
+                ? "по заданной границе" : "автоматическая выпуклая оболочка") << "\n";
 
-        out << "\\nПравила обработки проб:\\n";
-        out << "  Монолиты с номером, начинающимся на «м», не считаются обычными пробами при определении ПРС.\\n";
-        out << "  Образцы с суффиксом «аг» не считаются обычными пробами при определении ПРС.\\n";
-        out << "  ПРС определяется по кровле первой обычной пробы; фиксированный интервал 0,00–0,50 м не предполагается.\\n";
-        out << "  Категория распознаётся по суффиксу обозначения блока: A, B, C1, C2, P1, P2.\\n";
-        out << "  A+B+C1 — промышленные запасы; C2 — забалансовые запасы; P1 и P2 — прогнозные ресурсы.\\n\\n";
+        out << "\nПравила обработки проб:\n";
+        out << "  Монолиты с номером, начинающимся на «м», не считаются обычными пробами при определении ПРС.\n";
+        out << "  Образцы с суффиксом «аг» не считаются обычными пробами при определении ПРС.\n";
+        out << "  ПРС определяется по кровле первой обычной пробы; фиксированный интервал 0,00–0,50 м не предполагается.\n";
+        out << "  Категория распознаётся по суффиксу обозначения блока: A, B, C1, C2, P1, P2.\n";
+        out << "  A+B+C1 — промышленные запасы; C2 — забалансовые запасы; P1 и P2 — прогнозные ресурсы.\n\n";
     }
 
     std::string blockReserveCategory(const Block& block)
@@ -1042,16 +1042,16 @@ namespace
                                          const std::string& heading,
                                          bool showForecastBreakdown)
         {
-            out << "============================================================\\n"
-                << heading << "\\n"
-                << "============================================================\\n\\n";
+            out << "============================================================\n"
+                << heading << "\n"
+                << "============================================================\n\n";
             bool foundAny = false;
 
             for (const std::string& category : categories)
             {
                 bool foundCategory = false;
                 if (showForecastBreakdown)
-                    out << "КАТЕГОРИЯ " << category << "\\n";
+                    out << "КАТЕГОРИЯ " << category << "\n";
 
                 for (const Block& block : deposit.getBlocks())
                 {
@@ -1060,15 +1060,15 @@ namespace
                     foundAny = true;
                     foundCategory = true;
                     writeBlock(out, deposit, result, block);
-                    out << "\\n";
+                    out << "\n";
                 }
 
                 if (showForecastBreakdown && !foundCategory)
-                    out << "  Блоки категории " << category << " не найдены.\\n\\n";
+                    out << "  Блоки категории " << category << " не найдены.\n\n";
             }
 
             if (!foundAny)
-                out << "Блоки этой группы в исходных данных не найдены.\\n\\n";
+                out << "Блоки этой группы в исходных данных не найдены.\n\n";
         };
 
         writeCategories({"A", "B", "C1"},
@@ -1085,13 +1085,13 @@ namespace
                 continue;
             if (!haveUnclassified)
             {
-                out << "============================================================\\n"
-                    << "БЛОКИ БЕЗ РАСПОЗНАННОЙ КАТЕГОРИИ\\n"
-                    << "============================================================\\n\\n";
+                out << "============================================================\n"
+                    << "БЛОКИ БЕЗ РАСПОЗНАННОЙ КАТЕГОРИИ\n"
+                    << "============================================================\n\n";
                 haveUnclassified = true;
             }
             writeBlock(out, deposit, result, block);
-            out << "\\n";
+            out << "\n";
         }
     }
 
@@ -1167,20 +1167,20 @@ void DepositStatistics::write(
         throw std::runtime_error(
             "Не удалось открыть файл статистики: " + outputPath.string());
 
-    output << "СТАТИСТИКА МЕСТОРОЖДЕНИЯ\\n";
-    output << "GeoReport\\n\\n";
+    output << "СТАТИСТИКА МЕСТОРОЖДЕНИЯ\n";
+    output << "GeoReport\n\n";
     writeSettingsSection(output, mainIndicatorsSettings, groundwaterSettings,
                          groundwaterCalculationSettings, developmentSettings,
                          reserveSummarySettings);
 
-    output << "Примечание: статистика по образцам приведена параллельно для всех образцов\\n";
-    output << "и для образцов, которые по геологической модели отнесены к полезному ископаемому.\\n";
-    output << "Для сухого и обводнённого ПИ используются отдельные выборки.\\n";
-    output << "Разделение образцов выполняется по фактическому пересечению интервала\\n";
-    output << "образца с соответствующей частью геологической модели.\\n\\n";
+    output << "Примечание: статистика по образцам приведена параллельно для всех образцов\n";
+    output << "и для образцов, которые по геологической модели отнесены к полезному ископаемому.\n";
+    output << "Для сухого и обводнённого ПИ используются отдельные выборки.\n";
+    output << "Разделение образцов выполняется по фактическому пересечению интервала\n";
+    output << "образца с соответствующей частью геологической модели.\n\n";
 
     writeDepositOverview(output, deposit, analysisResult);
-    output << "\\n";
+    output << "\n";
     writeReserveCategoryGroups(output, deposit, analysisResult);
     writeDataQuality(output, deposit, analysisResult);
 }
