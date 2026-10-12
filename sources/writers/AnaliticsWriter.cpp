@@ -1,4 +1,5 @@
 #include "../../headers/writers/AnaliticsWriter.h"
+#include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/normative/NormativeAnalysis.h"
 #include "../../headers/writers/BlockDesignation.h"
@@ -127,7 +128,7 @@ void AnaliticsWriter::write(
                         sheet, row, 1, serialNumber++);
 
                     ExcelWriteUtils::writeString(
-                        sheet, row, 2, block.getName());
+                        sheet, row, 2, BlockDesignation::format(block.getName()));
 
                     ExcelWriteUtils::writeString(
                         sheet,
