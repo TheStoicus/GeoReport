@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 
+# Современный CMake 4.x больше не принимает старый минимум политики
+# в некоторых зависимостях LibreDWG (в частности, miniz). Это значение
+# задаёт совместимый минимум для вложенных сторонних проектов.
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5 CACHE STRING
+    "Minimum CMake policy version for third-party subprojects")
+
 project(GeoReport LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
