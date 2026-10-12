@@ -28,8 +28,10 @@ jobs:
       - name: Package project
         if: always()
         run: |
-          mkdir -p dist
-          git archive --format=zip --prefix=GeoReport/ HEAD -o dist/GeoReport_ready.zip
+          mkdir -p dist staging/GeoReport
+          git archive HEAD | tar -x -C staging/GeoReport
+          rm -f staging/GeoReport/GeoReport.zip
+          (cd staging && zip -qr ../dist/GeoReport_ready.zip GeoReport)
           shasum -a 256 dist/GeoReport_ready.zip
 
       - name: Upload project archive
