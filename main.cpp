@@ -122,7 +122,12 @@ int main()
         depositStatistics.write(
             statisticsOutputPath,
             deposit,
-            analysisResult);
+            analysisResult,
+            mainIndicatorsSettings,
+            groundwaterSettings,
+            groundwaterCalculationSettings,
+            developmentSettings,
+            reserveSummarySettings);
 
         // 8. DXF-план скважин.
         DxfWriter dxfWriter;
