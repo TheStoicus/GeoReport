@@ -1,4 +1,5 @@
 #include "../../headers/settings/ConsoleSettingsReader.h"
+#include "../../headers/writers/BlockDesignation.h"
 
 #include <algorithm>
 #include <utility>
@@ -61,7 +62,7 @@ namespace
 
         for (;;)
         {
-            std::cout << "\nСкважины блока " << block.getName()
+            std::cout << "\nСкважины блока " << BlockDesignation::format(block.getName())
                       << ", доступные для контура: \n";
 
             for (const std::string& number : available)
