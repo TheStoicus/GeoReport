@@ -1010,6 +1010,10 @@ namespace
         out << "  Фиксированная мощность вскрыши: " << displayNumber(mineral.getFixedOverburdenThickness()) << " м\n";
         out << "  Источник классификации песка для ПИ: "
             << classificationSourceName(mineral.getSandClassificationSource()) << "\n";
+        out << "  Источник классификации песка для внешней вскрыши: "
+            << classificationSourceName(mineral.getOverburdenSandClassificationSource()) << "\n";
+        out << "  Источник классификации песка для подстилающего слоя: "
+            << classificationSourceName(mineral.getUnderlyingSandClassificationSource()) << "\n";
 
         const GostSandClass gostClasses[] = {
             GostSandClass::VeryFine, GostSandClass::Fine, GostSandClass::VerySmall,
@@ -1059,11 +1063,20 @@ namespace
         out << "  Метод определения площади блоков: "
             << (reserve.getAreaMode() == BlockAreaMode::ManualBoundary
                 ? "по заданной границе" : "автоматическая выпуклая оболочка") << "\n";
+        out << "  Поверхностная специальная проба: ";
+        switch (mineral.getSurfaceSampleMode())
+        {
+            case SurfaceSampleMode::Exclude: out << "исключать из расчёта ПИ"; break;
+            case SurfaceSampleMode::UsefulMineral: out << "учитывать как полезное ископаемое"; break;
+            case SurfaceSampleMode::ExternalOverburden: out << "учитывать как внешнюю вскрышу"; break;
+        }
+        out << "\n";
 
         out << "\nПравила обработки проб:\n";
         out << "  Монолиты с номером, начинающимся на «м», не считаются обычными пробами при определении ПРС.\n";
         out << "  Образцы с суффиксом «аг» не считаются обычными пробами при определении ПРС.\n";
         out << "  ПРС определяется по кровле первой обычной пробы; фиксированный интервал 0,00–0,50 м не предполагается.\n";
+        out << "  Подстилающий слой определяется ниже последнего полезного интервала; перечисленные типы пород принудительно относятся к подстилающим.\n";
         out << "  Категория распознаётся по суффиксу обозначения блока: A, B, C1, C2, P1, P2.\n";
         out << "  A+B+C1 — промышленные запасы; C2 — забалансовые запасы; P1 и P2 — прогнозные ресурсы.\n\n";
     }
