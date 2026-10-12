@@ -1,4 +1,5 @@
 #include "../../headers/writers/SandGroupDistributionWriter.h"
+#include "../../headers/writers/BlockDesignation.h"
 #include "../../headers/excel/ExcelWriteUtils.h"
 #include "../../headers/calculations/WeightedAverageCalculator.h"
 #include "../../headers/utils/SandClassification.h"
@@ -179,7 +180,7 @@ void SandGroupDistributionWriter::write(
     {
         const auto& block = deposit.getBlocks()[i];
         const uint16_t col = static_cast<uint16_t>(FIRST_BLOCK_COLUMN + i);
-        ExcelWriteUtils::writeString(sheet, 3, col, block.getName());
+        ExcelWriteUtils::writeString(sheet, 3, col, BlockDesignation::format(block.getName()));
         const std::size_t samples = totalUsefulSamples(block, deposit, analysisResult);
         const std::size_t intersections = totalUsefulIntersections(block, deposit, analysisResult);
         ExcelWriteUtils::writeString(sheet, 4, col,
