@@ -76,7 +76,7 @@ std::string BlockDesignation::subblock(
     if (designation.second.empty())
         return subblockName;
 
-    return subblockName + designation.second;
+    return format(subblockName + designation.second);
 }
 
 std::string BlockDesignation::format(const std::string& name)
